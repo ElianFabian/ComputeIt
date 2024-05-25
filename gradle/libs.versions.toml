@@ -1,0 +1,67 @@
+[versions]
+agp = "8.4.1"
+kotlin = "2.0.0"
+
+junit = "4.13.2"
+androidJunit = "1.1.5"
+espressoCore = "3.5.1"
+leakCanary = "2.14"
+
+coreKtx = "1.13.1"
+# Set to 2.7.0, see why here: https://stackoverflow.com/questions/78490378/java-lang-illegalstateexception-compositionlocal-locallifecycleowner-not-presen
+# noinspection GradleDependency
+lifecycle = "2.7.0"
+activityCompose = "1.9.0"
+composeBom = "2024.05.00"
+appCompat = "1.7.0"
+dataStore = "1.1.1"
+
+simpleStack = "2.9.0"
+simpleStackExtensions = "2.3.4"
+coil = "2.6.0"
+firebaseBom = "33.1.0"
+timber = "5.0.1"
+
+kotlinParcelize = "1.8.10"
+jetbrainsKotlinJvm = "2.0.0"
+googleServices = "4.4.2"
+crashlytics = "3.0.1"
+
+[libraries]
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidJunit" }
+androidx-espressoCore = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+leakCanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakCanary" }
+
+androidx-coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-lifecycleRuntimeKtx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycleRuntimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidx-activityCompose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-composeBom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-toolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-testJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-appCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appCompat" }
+androidx-dataStore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore" }
+
+simpleStackExtensions = { group = "com.github.Zhuinden", name = "simple-stack-extensions", version.ref = "simpleStackExtensions" }
+simpleStack = { group = "com.github.Zhuinden", name = "simple-stack", version.ref = "simpleStack" }
+coilCompose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+firebaseBom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebaseCrashlyticsKtx = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+firebaseFirestoreKtx = { group = "com.google.firebase", name = "firebase-firestore-ktx" }
+firebaseAuthKtx = { group = "com.google.firebase", name = "firebase-auth-ktx" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlinParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinParcelize" }
+jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
