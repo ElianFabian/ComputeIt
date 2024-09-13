@@ -1,2 +1,14 @@
 <resources>
+    <string name="Username">Username</string>
+    <string name="Password">Password</string>
+    <string name="TogglePasswordVisibility">Toggle password visibility</string>
+    <string name="ContinueAsAGuest">Continue as a Guest</string>
+    <string name="NotYetImplemented">Not yet implemented</string>
+    <string name="SignInWithGoogle">Sign in with Google</string>
+    <string name="SignUpWithGoogle">Sign up with Google</string>
+    <string name="SignInWithPassword">Sign in with Password</string>
+    <string name="SignUpWithPassword">Sign up with Password</string>
+    <string name="SignInWithLink">Sign in with Link</string>
+    <string name="SignUpWithLink">Sign up with Link</string>
+    <string name="TheNumberOfMatchesIs_matchCount">The number of matches is %1$s</string>
 </resources>

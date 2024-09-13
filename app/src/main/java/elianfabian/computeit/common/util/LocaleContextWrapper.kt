@@ -1,11 +1,13 @@
 package elianfabian.computeit.common.util
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.ComponentCallbacks
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.os.Build
 import android.os.LocaleList
 import androidx.core.os.ConfigurationCompat
 import androidx.core.os.LocaleListCompat
@@ -15,6 +17,14 @@ fun Application.createLocaleContextWrapper(baseContext: Context): ContextWrapper
 	return LocaleContextWrapper(
 		application = this,
 		baseContext = baseContext,
+		createUpdatedLocaleContext = { oldContext, newConfig ->
+			createContextWithFirstSupportedUserLocaleOrForceDefault(
+				context = oldContext,
+				configuration = newConfig,
+				defaultLanguage = AppBuildConfig.DefaultLanguage,
+				supportedLanguages = AppBuildConfig.SupportedLanguages,
+			)
+		},
 	)
 }
 
@@ -22,13 +32,14 @@ fun Application.createLocaleContextWrapper(baseContext: Context): ContextWrapper
 class LocaleContextWrapper(
 	application: Application,
 	baseContext: Context,
+	private val createUpdatedLocaleContext: (oldContext: Context, newConfig: Configuration) -> Context,
 ) : ContextWrapper(
-	baseContext.createContextWithFirstSupportedUserLocaleOrForceDefault(baseContext.resources.configuration)
+	createUpdatedLocaleContext(baseContext, baseContext.resources.configuration)
 ) {
 	init {
 		application.registerComponentCallbacks(object : ComponentCallbacks {
 			override fun onConfigurationChanged(newConfig: Configuration) {
-				_baseContext = _baseContext.createContextWithFirstSupportedUserLocaleOrForceDefault(newConfig)
+				_baseContext = createUpdatedLocaleContext(_baseContext, newConfig)
 			}
 
 			override fun onLowMemory() = Unit
@@ -39,38 +50,45 @@ class LocaleContextWrapper(
 	private var _baseContext = super.getBaseContext()
 
 
-	override fun getResources(): Resources {
-		return _baseContext.resources
-	}
+	override fun getResources(): Resources = _baseContext.resources
 
-	override fun getTheme(): Resources.Theme {
-		return _baseContext.theme
-	}
+	override fun getTheme(): Resources.Theme = _baseContext.theme
 
-	override fun getBaseContext(): Context {
-		return _baseContext
-	}
+	override fun getBaseContext(): Context = _baseContext
 
 	override fun setTheme(resid: Int) {
 		_baseContext.setTheme(resid)
 	}
 }
 
-private fun Context.createContextWithFirstSupportedUserLocaleOrForceDefault(configuration: Configuration): Context {
-
+@Suppress("DEPRECATION")
+@SuppressLint("ObsoleteSdkInt")
+private fun createContextWithFirstSupportedUserLocaleOrForceDefault(
+	context: Context,
+	configuration: Configuration,
+	defaultLanguage: String,
+	supportedLanguages: List<String>,
+): Context {
 	val userSupportedLocales = ConfigurationCompat
 		.getLocales(configuration)
-		.getMatches(AppBuildConfig.SupportedLanguages)
+		.getMatches(supportedLanguages)
 
 	val newLocales = userSupportedLocales.ifEmpty {
-		listOf(Locale(AppBuildConfig.DefaultLanguage))
+		listOf(Locale(defaultLanguage))
 	}
 
-	val newLocaleList = LocaleList(*newLocales.toTypedArray())
-	LocaleList.setDefault(newLocaleList)
-	configuration.setLocales(newLocaleList)
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+		val newLocaleList = LocaleList(*newLocales.toTypedArray())
+		LocaleList.setDefault(newLocaleList)
+		configuration.setLocales(newLocaleList)
+	}
+	else {
+		val newLocale = newLocales.first()
+		Locale.setDefault(newLocale)
+		configuration.locale = newLocale
+	}
 
-	return createConfigurationContext(configuration)
+	return context.createConfigurationContext(configuration)
 }
 
 private fun LocaleListCompat.getMatches(supportedLocales: List<String>): List<Locale> {

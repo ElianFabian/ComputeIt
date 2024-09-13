@@ -15,9 +15,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import com.zhuinden.simplestack.BackHandlingModel
+import com.zhuinden.simplestack.History
 import com.zhuinden.simplestack.SimpleStateChanger
 import com.zhuinden.simplestack.navigator.Navigator
+import com.zhuinden.simplestackextensions.lifecyclektx.observeAheadOfTimeWillHandleBackChanged
 import com.zhuinden.simplestackextensions.navigatorktx.backstack
 import com.zhuinden.simplestackextensions.services.DefaultServiceProvider
 import elianfabian.computeit.R
@@ -26,7 +29,10 @@ import elianfabian.computeit.common.util.callback.OnMainBackstackIsInitializedCa
 import elianfabian.computeit.common.util.simplestack.FragmentStateChanger
 import elianfabian.computeit.common.util.simplestack.ProcessDeathKeyFilter
 import elianfabian.computeit.common.util.simplestack.forEachServiceOfType
+import elianfabian.computeit.features.auth.presentation.login.LoginKey
 import elianfabian.computeit.ui.theme.ComputeItTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : FragmentActivity() {
 
@@ -52,6 +58,36 @@ class MainActivity : FragmentActivity() {
 		enableEdgeToEdge()
 
 		onBackPressedDispatcher.addCallback(backPressedCallback)
+		// TODO: make only production-release use the ComputeIt firebase project?
+		lifecycleScope.launch {
+//			val random = Random(42)
+//
+//			val time = measureTime {
+//				repeat(1_000_000) {
+//					random.nextInt()
+//				}
+//			}
+//
+//			println("$$$ time: $time")
+			//delay(1000)
+//			val message = "Spyro"
+//			val blob = Blob.fromBytes(message.toByteArray())
+//			Firebase.firestore.document("BlobCollection/blob")
+//				.set(mapOf("blob" to blob))
+//				.await()
+//
+//			val response = Firebase.firestore.document("BlobCollection/blob")
+//				.get()
+//				.await()
+//			
+//			val blobFromServer: Blob? = response.data?.get("blob") as? Blob
+//			println("$$$ blob = $blobFromServer")
+//			println("$$$ blob bytes = ${blobFromServer?.toBytes()}")
+//			val bytesToString = String(blobFromServer?.toBytes() ?: byteArrayOf())
+//			println("$$$ message = $bytesToString")	
+
+			delay(500)
+		}
 
 		setContent {
 			ComputeItTheme {
@@ -77,20 +113,20 @@ class MainActivity : FragmentActivity() {
 			.setScopedServices(DefaultServiceProvider())
 			.setGlobalServices(GlobalServiceProvider(application))
 			.setKeyFilter(ProcessDeathKeyFilter())
-//			.install(
-//				this,
-//				fragmentContainerView,
-//				History.single(TODO("Set initial key")),
-//			)
-//
-//		backPressedCallback.isEnabled = backstack.willHandleAheadOfTimeBack()
-//		backstack.observeAheadOfTimeWillHandleBackChanged(this) { willHandleBack ->
-//			backPressedCallback.isEnabled = willHandleBack
-//		}
-//
-//		if (savedInstanceState == null) {
-//			initialSetup()
-//		}
+			.install(
+				this,
+				fragmentContainerView,
+				History.single(LoginKey),
+			)
+
+		backPressedCallback.isEnabled = backstack.willHandleAheadOfTimeBack()
+		backstack.observeAheadOfTimeWillHandleBackChanged(this) { willHandleBack ->
+			backPressedCallback.isEnabled = willHandleBack
+		}
+
+		if (savedInstanceState == null) {
+			initialSetup()
+		}
 	}
 
 	@Suppress("UNCHECKED_CAST")
