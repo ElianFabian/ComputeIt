@@ -109,6 +109,8 @@ dependencies {
 	implementation(libs.firebaseCrashlyticsKtx)
 	implementation(platform(libs.firebaseBom))
 
+	implementation(libs.kotlinCoroutines)
+
 	implementation(libs.timber)
 	implementation(libs.coilCompose)
 	implementation(libs.simpleStackExtensions)
