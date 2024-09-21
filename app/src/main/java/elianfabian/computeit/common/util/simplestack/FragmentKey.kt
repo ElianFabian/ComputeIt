@@ -9,7 +9,7 @@ import com.zhuinden.simplestackextensions.services.DefaultServiceProvider
 @OptIn(ExperimentalStdlibApi::class)
 abstract class FragmentKey(
 	private val serviceModule: ServiceModule? = null,
-) : CoroutineScopedFragmentKey(),
+) : CoroutineScopedFragmentKey(serviceModule),
 	DefaultServiceProvider.HasServices {
 
 	override fun getScopeTag(): String = toString()

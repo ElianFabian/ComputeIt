@@ -24,7 +24,7 @@ import kotlin.coroutines.CoroutineContext
  */
 @ExperimentalStdlibApi
 abstract class CoroutineScopedFragmentKey(
-	private val serviceModule: ServiceModule? = null,
+	private val serviceModule: ServiceModule?,
 ) : DefaultFragmentKey(),
 	DefaultServiceProvider.HasServices,
 	ScopedServices.Registered,
