@@ -163,6 +163,15 @@ fun BaseAppModuleExtension.setupBuildFields() {
 		buildConfigField("String", "FIREBASE_DEVELOPMENT_ENVIRONMENT", "\"$environmentProperty\"")
 		buildConfigField("String", "FIREBASE_EMULATOR_HOST", "\"$emulatorHostProperty\"")
 		buildConfigField("boolean", "USE_FIREBASE_EMULATOR", "$useEmulatorProperty")
+
+
+		val currentProductFlavors = productFlavors.toList()
+		applicationVariants.all {
+			val currentProductFlavor = productFlavors.first()
+			currentProductFlavors.forEach { productFlavor ->
+				buildConfigField("boolean", "IS_${productFlavor.name.uppercase()}", "${productFlavor.name == currentProductFlavor.name}")
+			}
+		}
 	}
 	buildTypes {
 		release {

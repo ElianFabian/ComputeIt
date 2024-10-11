@@ -19,11 +19,8 @@ object AppBuildConfig {
 
 
 	object Flavors {
-		const val Development = "development"
-		const val Production = "production"
-
-		const val IsDevelopment = Flavor == Development
-		const val IsProduction = Flavor == Production
+		const val IsDevelopment = BuildConfig.IS_DEVELOPMENT
+		const val IsProduction = BuildConfig.IS_PRODUCTION
 	}
 
 	object Firebase {
